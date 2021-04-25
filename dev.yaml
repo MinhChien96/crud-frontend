@@ -1,0 +1,47 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend-svc
+  labels:
+    app: crud-demo
+spec:
+  selector:
+    app: crud-demo
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-dep
+  labels:
+    app: crud-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crud-demo
+  template:
+    metadata:
+      labels:
+        app: crud-demo
+    spec:
+      containers:
+      - name: crud-frontend
+        image: awingdev2020/crud-frontend:$BUILD_NUMBER
+        env:
+          - name: APP_ENV
+            value: production
+          - name: GENERATE_SOURCEMAP
+            value: "false"
+        volumeMounts:
+        - mountPath: "/etc/localtime"
+          name: awingtimezone
+      volumes:
+        - name: awingtimezone
+          hostPath:
+            path: "/usr/share/zoneinfo/Asia/Ho_Chi_Minh"

@@ -11,7 +11,9 @@ const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
     (response) => {
         if (response && response.data) {
-            return response.data;
+            const totalCount = response.headers['x-total-count'];
+            const { data } = response;
+            return { data, totalCount };
         }
 
         return response;

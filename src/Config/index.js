@@ -1,4 +1,4 @@
-switch (process.env.APP_ENV) {
+switch (process.env.NODE_ENV) {
     case 'development': {
         module.exports = require('./dev');
         break;
@@ -15,7 +15,7 @@ switch (process.env.APP_ENV) {
     }
 
     default: {
-        module.exports = require('./dev');
+        module.exports = require('./production');
         break;
     }
 }
